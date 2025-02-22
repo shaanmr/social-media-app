@@ -16,43 +16,62 @@ A simple social media application built using Django, HTML, CSS, and JavaScript.
 🛠️ Installation & Setup
 Follow these steps to set up the project locally.
 
-1. Clone the Repository:
+1️⃣ Clone the Repository:
 
-git clone https://github.com/shaanmr/social-media-app.git
+git clone https://github.com/YOUR_GITHUB_USERNAME/social-media-app.git
 cd social-media-app
 
 
-2. Create a Virtual Environment (Recommended)
+2️⃣ Create a Virtual Environment (Recommended)
 
 python -m venv venv
-source venv/Scripts/activate  # For Windows
+source venv/Scripts/activate  # Windows
 
 
-3. Install Dependencies
+3️⃣ Install Dependencies
 
 pip install -r requirements.txt
 
 
-4. Apply Migrations & Create Database
+4️⃣ Apply Migrations & Create Database
 
 python manage.py makemigrations
 python manage.py migrate
 
 
-5. Create Superuser (Optional)
+5️⃣ Create Superuser (Optional)
 
 python manage.py createsuperuser
 
-Use:-
-
+Use:
 Username: admin
 Password: admin123
 
-6. Run the Server
+6️⃣ Run the Server
 
 python manage.py runserver
 
-Go To: http://127.0.0.1:8000/
+Go to `http://127.0.0.1:8000/`
+
+---
+
+🔑 Sample Test Credentials
+Use these accounts to test the application:
+
+TestUser #01
+
+Username: shaanmr
+Password: shaan2025
+
+
+TestUser #02
+
+Username: ostadid
+Password: ostad2025
+
+---
 
 📌 Entity Relationship Diagram (ERD)
 This diagram represents the database structure.
+
+![ERD](ERD.png)
