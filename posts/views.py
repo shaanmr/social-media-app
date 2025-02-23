@@ -3,6 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Q
 from .forms import PostForm
 from .models import Post
 
@@ -43,7 +44,28 @@ def delete_post(request, post_id):
     return render(request, 'posts/delete_post.html', {'post': post})
 
 def home(request):
-    posts = Post.objects.all().order_by('-created_at')  # Fetch all posts
+    posts = Post.objects.all()
+
+    date_filter = request.GET.get('date', 'latest')
+    if date_filter == 'oldest':
+        posts = posts.order_by('created_at')
+    else:
+        posts = posts.order_by('-created_at')
+
+    media_type = request.GET.get('media_type')
+    if media_type == 'text':
+        posts = posts.filter(Q(image__isnull=True) | Q(image=''))
+    elif media_type == 'image':
+        posts = posts.exclude(Q(image__isnull=True) | Q(image=''))
+
+    author = request.GET.get('author')
+    if author:
+        posts = posts.filter(user__username=author)
+
+    search_query = request.GET.get('search')
+    if search_query:
+        posts = posts.filter(Q(content__icontains=search_query))
+
     return render(request, 'posts/home.html', {'posts': posts})
 
 def register(request):
@@ -51,14 +73,14 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # ✅ FIXED: Ensures new user is logged in after registering
+            login(request, user)
             messages.success(request, "Registration successful!")
             return redirect('home')
     else:
         form = UserCreationForm()
     return render(request, 'posts/register.html', {'form': form})
 
-@login_required  # ✅ FIXED: Ensures only logged-in users can see their profile
+@login_required
 def profile(request):
-    user_posts = Post.objects.filter(user=request.user)  # Get only the logged-in user's posts
+    user_posts = Post.objects.filter(user=request.user)
     return render(request, 'posts/profile.html', {'posts': user_posts})

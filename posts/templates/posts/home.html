@@ -1,6 +1,22 @@
 {% extends 'posts/base.html' %}
 {% block content %}
 <h2>All Posts</h2>
+
+<form method="GET" action="">
+    <input type="text" name="search" placeholder="Search posts..." value="{{ request.GET.search }}">
+    <select name="date">
+        <option value="latest" {% if request.GET.date == 'latest' %}selected{% endif %}>Newest First</option>
+        <option value="oldest" {% if request.GET.date == 'oldest' %}selected{% endif %}>Oldest First</option>
+    </select>
+    <select name="media_type">
+        <option value="">All</option>
+        <option value="text" {% if request.GET.media_type == 'text' %}selected{% endif %}>Text Only</option>
+        <option value="image" {% if request.GET.media_type == 'image' %}selected{% endif %}>With Images</option>
+    </select>
+    <input type="text" name="author" placeholder="Filter by author..." value="{{ request.GET.author }}">
+    <button type="submit">Apply Filters</button>
+</form>
+
 {% for post in posts %}
     <div class="card mt-3">
         <div class="card-body">
@@ -13,6 +29,3 @@
     </div>
 {% endfor %}
 {% endblock %}
-{% if post.image %}
-    <img src="{{ post.image.url }}" class="img-fluid" alt="Post Image">
-{% endif %}
